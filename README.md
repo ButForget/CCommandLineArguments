@@ -125,3 +125,58 @@ typedef struct
 `unsigned int ccla_get_id(Args* args, const char* name)`用于解析命令行参数, 返回值是先前指定的id, 若出现错误, 返回0, 同时会将参数内容放置于Args中的buffer.
 
 `void ccla_destroy_args(Args* args)`销毁并回收分配的内存资源, `args`会被置为NULL.
+### 其他
+
+ccla 使用一个全局变量`FILE* ccla_log`控制错误信息的输出位置. 默认情况下, 该变量其值为`stderr`.
+
+你可以改变ccla_log的值来控制错误信息输出位置, 如:
+```C
+#include "ccla.h"
+#include <stdio.h>
+...
+...
+...
+ccla_log = fopen("./log.txt", "w")
+...
+...
+...
+```
+
+这时, 错误信息会输出在当前目录下的*log.txt*文件里.
+## TODO
+- []添加注释.
+- []完善错误处理.
+- []支持子命令.
+- []支持别名.
+- []支持使用空格作为分隔符.
+
+## License
+BSD 3-Clause License
+>
+>BSD 3-Clause License
+>
+>Copyright (c) 2023, CaKEntity
+>Redistribution and use in source and binary forms, with or without
+>modification, are permitted provided that the following conditions are met:
+>
+>1. Redistributions of source code must retain the above copyright notice, this
+>   list of conditions and the following disclaimer.
+>
+>2. Redistributions in binary form must reproduce the above copyright notice,
+>   this list of conditions and the following disclaimer in the documentation
+>   and/or other materials provided with the distribution.
+>
+>3. Neither the name of the copyright holder nor the names of its
+>   contributors may be used to endorse or promote products derived from
+>   this software without specific prior written permission.
+>
+>THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
