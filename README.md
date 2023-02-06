@@ -85,7 +85,6 @@ int main(int argc, char** argv)
     5
     '\0'
     0
-    </br>
 ### 说明
 #### 结构体
 `Args` 是该库的主要结构体,定义如下:
@@ -93,13 +92,17 @@ int main(int argc, char** argv)
 ```C
 typedef struct
 {
+    /* public */
+    char sepa;
     char* buffer;
     size_t arg_size;
 
-    char sepa;
-    __Arg* args;
-    __Arg* args_end;
-    size_t buffer_size;
+    /* private */
+    __Arg* __args;
+    __Arg* __args_end;
+    size_t __buffer_size;
+    FILE* __log;
+    FILE* __output;
 }Args;
 
 ```  
