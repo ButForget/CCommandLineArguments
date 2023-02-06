@@ -113,11 +113,10 @@ typedef struct
 剩下的结构体成员一般情况下无需访问.</br></br>
 
 #### 函数
-- `Args* ccla_create_args(size_t buffer_size, char sepa)`中:
+- `Args* ccla_create_args(size_t buffer_size, char sepa)`中:  
+   `buffer_size` 不仅是缓冲区长度, 同时也是命令行参数解析时所能接受的最大长度(不包括参数名称, 即`--foo=`部分).
 
-`buffer_size` 不仅是缓冲区长度, 同时也是命令行参数解析时所能接受的最大长度(不包括参数名称, 即`--foo=`部分).
-
-`sepa`是指定的分隔符, 一般是'=', 如果指定为' ', 将会发生逻辑上的错误.
+   `sepa`是指定的分隔符, 一般是'=', 如果指定为' ', 将会发生逻辑上的错误.
 
 
 - `int ccla_add_arg(Args* args, const char* name, unsigned int id)`用于添加参数到参数表, `name`和`id`都不能出现重复. 请不要为id赋值为0, 这是为了保证`ccla_get_id的错误码正常抛出.
@@ -127,7 +126,7 @@ typedef struct
 - `void ccla_destroy_args(Args* args)`销毁并回收分配的内存资源, `args`会被置为NULL.
 ### 其他
 
-~ccla 使用一个全局变量`FILE* ccla_log`控制错误信息的输出位置. 默认情况下, 该变量其值为`stderr`.~
+~ccla 使用一个全局变量`FILE* ccla_log`控制错误信息的输出位置. 默认情况下, 该变量其值为`stderr`.~  
 现在, 你应该使用config系列函数进行设置.
 
 ## TODO
