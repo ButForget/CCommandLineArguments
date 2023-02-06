@@ -6,7 +6,7 @@ _example.c_
 ``` C
 int main(int argc, char** argv)
 {
-    Args* args = ccla_create_args(256, '=');
+    Args* args = ccla_create_args();
     ccla_add_arg(args, "--file", 1);
     ccla_add_arg(args, "--output", 2);
     ccla_add_arg(args, "--run", 3);
@@ -85,9 +85,9 @@ int main(int argc, char** argv)
     5
     '\0'
     0
-    
+    </br>
 ### 说明
-
+#### 结构体
 `Args` 是该库的主要结构体,定义如下:
 
 ```C
@@ -102,53 +102,44 @@ typedef struct
     size_t buffer_size;
 }Args;
 
-```
-
+```  
+</br>
 其中:
 
 `buffer`是`Args`的缓冲区, 每当解析完一个参数, 参数内容会被放置在该缓冲区中, 同时清除上一次解析所留下的缓冲内容.
 
 `arg_size`是缓冲内容的长度, 可以配合`srtcpy()`或`memcpy()`将缓冲区内容拷贝到其他变量中; 需要注意的是, `arg_size`的单位是`sizeof(char)`而不是*byte*.
 
-剩下的结构体成员一般情况下无需访问.
+剩下的结构体成员一般情况下无需访问.</br></br>
 
-
-`Args* ccla_create_args(size_t buffer_size, char sepa)`中:
+#### 函数
+- `Args* ccla_create_args(size_t buffer_size, char sepa)`中:
 
 `buffer_size` 不仅是缓冲区长度, 同时也是命令行参数解析时所能接受的最大长度(不包括参数名称, 即`--foo=`部分).
 
 `sepa`是指定的分隔符, 一般是'=', 如果指定为' ', 将会发生逻辑上的错误.
 
 
-`int ccla_add_arg(Args* args, const char* name, unsigned int id)`用于添加参数到参数表, `name`和`id`都不能出现重复. 请不要为id赋值为0, 这是为了保证`ccla_get_id的错误码正常抛出.
+- `int ccla_add_arg(Args* args, const char* name, unsigned int id)`用于添加参数到参数表, `name`和`id`都不能出现重复. 请不要为id赋值为0, 这是为了保证`ccla_get_id的错误码正常抛出.
 
-`unsigned int ccla_get_id(Args* args, const char* name)`用于解析命令行参数, 返回值是先前指定的id, 若出现错误, 返回0, 同时会将参数内容放置于Args中的buffer.
+- `unsigned int ccla_get_id(Args* args, const char* name)`用于解析命令行参数, 返回值是先前指定的id, 若出现错误, 返回0, 同时会将参数内容放置于Args中的buffer.
 
-`void ccla_destroy_args(Args* args)`销毁并回收分配的内存资源, `args`会被置为NULL.
+- `void ccla_destroy_args(Args* args)`销毁并回收分配的内存资源, `args`会被置为NULL.
 ### 其他
 
-ccla 使用一个全局变量`FILE* ccla_log`控制错误信息的输出位置. 默认情况下, 该变量其值为`stderr`.
+~ccla 使用一个全局变量`FILE* ccla_log`控制错误信息的输出位置. 默认情况下, 该变量其值为`stderr`.~
+现在, 你应该使用config系列函数进行设置.
 
-你可以改变ccla_log的值来控制错误信息输出位置, 如:
-```C
-#include "ccla.h"
-#include <stdio.h>
-...
-...
-...
-ccla_log = fopen("./log.txt", "w")
-...
-...
-...
-```
-
-这时, 错误信息会输出在当前目录下的*log.txt*文件里.
 ## TODO
 - [ ] 添加注释.
 - [ ] 完善错误处理.
 - [ ] 支持子命令.
 - [ ] 支持别名.
 - [ ] 支持使用空格作为分隔符.
+
+## 更新日志
+- 2023/2/6: 简化'ccla_create_args'用法, 现在buffer_size默认给出为256, sepa 默认为'='. 可以使用config系列函数修改它们.
+- 2023/2/5: 创建仓库.
 
 ## License
 BSD 3-Clause License
