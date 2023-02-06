@@ -10,8 +10,6 @@ extern "C"{
 #include <stdlib.h>
 
 #define ARG_NAME_LENGTH 32
- 
-extern FILE* ccla_log; 
 
 typedef struct __Arg
 {
@@ -23,19 +21,30 @@ typedef struct __Arg
 
 typedef struct
 {
-    __Arg* args;
-    __Arg* args_end;
+    /* public */
     char sepa;
     char* buffer;
-    size_t buffer_size;
     size_t arg_size;
+
+    /* private */
+    __Arg* __args;
+    __Arg* __args_end;
+    size_t __buffer_size;
+    FILE* __log;
+    FILE* __output;
 }Args;
 
-Args* ccla_create_args(size_t arg_size, char sepa);
+/* normal-function*/
+Args* ccla_create_args(void);
 int ccla_add_arg(Args* args, const char* name, unsigned int id);
 void ccla_destroy_args(Args* args);
 unsigned int ccla_get_id(Args* args, const char* name);
 
+/* config-args-functions */
+int ccla_config_log(Args* args, FILE* log);
+int ccla_config_output(Args* args, FILE* output);
+int ccla_config_buffer_size(Args* args, size_t buffer_size);
+int ccla_config_sepa(Args* args, char sepa);
 
 #ifdef __cplusplus
 }
