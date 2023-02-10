@@ -36,49 +36,24 @@ int main(int argc, char** argv)
 }
 
 ```
-编译(以gcc为例)
-
-    gcc example.c ccla.c -o example  -O2
-  
-输入
-
-    .\example foooooooo
+*powershell*
     
-输出
-
+    > gcc example.c ccla.c -o example  -O2
+    
+    >.\example foooooooo
     [Error] Dont find any character is '=' in: "foooooooo".
     
-输入
-
-    \.example foo_1 foo_2 ...
-    
-输出
-
+    >.\example foo_1 foo_2 ...
     [Error] Dont find any character is '=' in: "foo_1".
     
-输入
-
-    .\example --file
-
-输出
-
+    >.\example --file
     [Error] Dont find any character is '=' in: "--file".
     
-输入
-
-    .\example --file=
-    
- 输出
- 
+    >.\example --file=
     '\0'
     0
     
-输入
-
-    .\example --file=foo --output=foo_2 --run=
-    
-输出
-
+    >.\example --file=foo --output=foo_2 --run=
     foo
     3
     foo_2
@@ -129,9 +104,21 @@ typedef struct
 - `void ccla_destroy_args(Args* args)`销毁并回收分配的内存资源, `args`会被置为NULL.
 ### 其他
 
-~ccla 使用一个全局变量`FILE* ccla_log`控制错误信息的输出位置. 默认情况下, 该变量其值为`stderr`.~  
+~~ccla 使用一个全局变量`FILE* ccla_log`控制错误信息的输出位置. 默认情况下, 该变量其值为`stderr`.~~  
 现在, 你应该使用config系列函数进行设置.
+```C
+int ccla_config_log(Args* args, FILE* log);
+//错误日志输出文件流
 
+int ccla_config_output(Args* args, FILE* output);
+//帮助信息输出文件流（未启用）
+
+int ccla_config_buffer_size(Args* args, size_t buffer_size);
+//参数缓冲区大小
+
+int ccla_config_sepa(Args* args, char sepa);
+//分隔符设置
+```
 ## TODO
 - [ ] 添加注释.
 - [ ] 完善错误处理.
@@ -140,6 +127,7 @@ typedef struct
 - [ ] 支持使用空格作为分隔符.
 
 ## 更新日志
+- 2023/2/10: 更新README.md, 简化创建参数表流程(未提交).
 - 2023/2/6: 简化'ccla_create_args'用法, 现在buffer_size默认给出为256, sepa 默认为'='. 可以使用config系列函数修改它们.
 - 2023/2/5: 创建仓库.
 
