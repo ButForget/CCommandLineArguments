@@ -4,12 +4,11 @@ A project to help developers easily use command line arguments in command line p
 ### 示例
 _example.c_
 ``` C
+#include "ccla.h"
+
 int main(int argc, char** argv)
 {
-    Args* args = ccla_create_args();
-    ccla_add_arg(args, "--file", 1);
-    ccla_add_arg(args, "--output", 2);
-    ccla_add_arg(args, "--run", 3);
+    Args* args = ccla_create_args("--file --output --run");
 
     while(--argc)
     {
@@ -34,7 +33,6 @@ int main(int argc, char** argv)
     ccla_destroy_args(args);
     return 0;
 }
-
 ```
 *powershell*
     
@@ -91,21 +89,18 @@ typedef struct
 剩下的结构体成员一般情况下无需访问.</br></br>
 
 #### 函数
-- `Args* ccla_create_args(size_t buffer_size, char sepa)`中:  
-   `buffer_size` 不仅是缓冲区长度, 同时也是命令行参数解析时所能接受的最大长度(不包括参数名称, 即`--foo=`部分).
-
-   `sepa`是指定的分隔符, 一般是'=', 如果指定为' ', 将会发生逻辑上的错误.
-
-
-- `int ccla_add_arg(Args* args, const char* name, unsigned int id)`用于添加参数到参数表, `name`和`id`都不能出现重复. 请不要为id赋值为0, 这是为了保证`ccla_get_id的错误码正常抛出.
+- `Args* ccla_create_args(const char* format);`:
+我们使用格式字符串初始化参数表. 其使用方法如下:
+    - 以空格为分隔符, 字符串开头的所有空格都会被忽略, 参数之间超过一个的空格会被忽略.
+    - *待续*
 
 - `unsigned int ccla_get_id(Args* args, const char* name)`用于解析命令行参数, 返回值是先前指定的id, 若出现错误, 返回0, 同时会将参数内容放置于Args中的buffer.
 
 - `void ccla_destroy_args(Args* args)`销毁并回收分配的内存资源, `args`会被置为NULL.
+
 ### 其他
 
-~~ccla 使用一个全局变量`FILE* ccla_log`控制错误信息的输出位置. 默认情况下, 该变量其值为`stderr`.~~  
-现在, 你应该使用config系列函数进行设置.
+使用config系列函数设置参数表.
 ```C
 int ccla_config_log(Args* args, FILE* log);
 //错误日志输出文件流
@@ -127,6 +122,7 @@ int ccla_config_sepa(Args* args, char sepa);
 - [ ] 支持使用空格作为分隔符.
 
 ## 更新日志
+- 2023/2/11: 简化使用流程, 现在使用格式字符串创建参数表, 不再使用大量的`ccla_add_arg`;后者已被弃用.
 - 2023/2/10: 更新README.md, 简化创建参数表流程(未提交).
 - 2023/2/6: 简化'ccla_create_args'用法, 现在buffer_size默认给出为256, sepa 默认为'='. 可以使用config系列函数修改它们.
 - 2023/2/5: 创建仓库.

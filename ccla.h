@@ -10,10 +10,12 @@ extern "C"{
 #include <stdlib.h>
 
 #define ARG_NAME_LENGTH 32
-
+#define ARG_NOTE_LENGTH 128
 typedef struct __Arg
 {
     char name[ARG_NAME_LENGTH];
+    char short_name;
+    char note[ARG_NOTE_LENGTH];
     unsigned int id;
     bool found;
     struct __Arg* next;
@@ -35,8 +37,7 @@ typedef struct
 }Args;
 
 /* normal-function*/
-Args* ccla_create_args(void);
-int ccla_add_arg(Args* args, const char* name, unsigned int id);
+Args* ccla_create_args(const char* format);
 void ccla_destroy_args(Args* args);
 unsigned int ccla_get_id(Args* args, const char* name);
 

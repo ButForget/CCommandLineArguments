@@ -2,10 +2,7 @@
 
 int main(int argc, char** argv)
 {
-    Args* args = ccla_create_args(256, '=');
-    ccla_add_arg(args, "--file", 1);
-    ccla_add_arg(args, "--output", 2);
-    ccla_add_arg(args, "--run", 3);
+    Args* args = ccla_create_args("--file --output --run");
 
     while(--argc)
     {
